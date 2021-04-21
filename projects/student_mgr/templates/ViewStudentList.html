@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>전체 학생 리스트</title>
+</head>
+<body>
+<h1 align="center">전체 학생 리스트</h1>
+{% if student_list %}
+<table align="center" border="1">
+    <tr>
+        <td width="150">학번</td>
+        <td width="150">이름</td>
+        <td width="150">학과</td>
+        <td width="150">평점</td>
+        <td width="150">동아리</td>
+        <td width="150">삭제</td>
+    </tr>
+    {% for student in student_list %}
+    <tr>
+        <td>{{student.univ_id}}</td>
+        <td>{{student.univ_name}}</td>
+        <td>{{student.major}}</td>
+        <td>{{student.avg_credit}}</td>
+        <td>{{student.circle}}</td>
+        <td><!--삭제 버튼-->
+            <form action="Remove" method="post">
+                <input type="hidden" name="univ_id" value="{{student.univ_id}}"/>
+                <input type="hidden" name="univ_name" value="{{student.univ_name}}"/>
+                <input type="submit" value="삭제"/>
+            </form>
+
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>학생 정보가 없습니다</p>
+{% endif %}
+<p align="center">
+<a href="Add">학생 정보 추가</a>
+</p>
+</body>
+</html>

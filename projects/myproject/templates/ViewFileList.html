@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>S3 업로드 파일 목록</title>
+</head>
+<body>
+    <h1>업로드 파일 목록</h1>
+
+    {# 주석 if file_list : pybo.py 에서 file_list 변수를 ViewFileList.html (현재파일) 로 전송해서
+                          file_list 가 존재 한다면 True, 전송하지 않아서 file_list가 존재 하지 않는다면 False
+    #}
+    {% if file_list %}
+    {# 조건이 참일때 실행 #}
+        <ul>
+            {#
+                for file in file_list : file_list에서 객체를 하나씩 순서대로 file에 대입
+                file_list에는 pybo.py 에서 전송한 S3에 업로드한 파일의 리스트가 저장되어 있음
+                file_list에 저장된 데이터는 다음과 같음
+                                         [
+                                           {"Key":"업로드한 파일명1"},
+                                           {"Key":"업로드한 파일명2"}
+                                           ..
+                                          ]
+               file 에는 {"Key":"업로드한 파일명1"} 이 순서대로 대입됨
+            #}
+            {% for file in file_list %}
+            <li >
+                <form action="/DownLoadFile" method="post">
+                    {#  업로드한 파일명을 출력#}
+                    {{ file.Key }}
+
+                    {#
+                    input type="hidden" : 화면에는 출력하지 않고 pybo.py 로 데이터만 전송
+                    name="file_name"     :  pybo.py 로 데이터 전송시 사용할 이름
+                    value="{{ file.Key }}": pybo.py 로 전송할 데이터
+                    #}
+                    <input type="hidden" name="file_name" value="{{ file.Key }}"/>
+
+                    {# input type="submit" : 버튼 클릭했을때 pybo.py로 데이터 전송      #}
+                    <input type="submit" value="다운로드"/>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+    <p>파일이 없습니다</p>
+    {% endif %}
+</body>
+</html>
